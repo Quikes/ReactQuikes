@@ -51,6 +51,7 @@ export default AppRouter; */
 
 
 import React from "react";
+import { ImageBackground, Text } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Game from './Game';
 
@@ -58,10 +59,11 @@ function App() {
   return (
     <Router>
       <div>
+        <Background />
         <Header />
 
         <Route exact path="/" component={Home} />
-        <Route path="/about" component={About} />
+        <Route path="/images" component={About} />
         <Route path="/topics" component={Topics} />
         <Route path="/tictactoe" component={Game} />
       </div>
@@ -70,11 +72,70 @@ function App() {
 }
 
 function Home() {
-  return <h2>Home</h2>;
+  return (
+    <h2>Welcome to my page =)</h2>
+  );
+}
+class Background extends React.Component {
+  render() {
+    return (
+      <h1>
+        Front Page
+      </h1>
+
+    )
+  }
 }
 
+class Picture extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      image: '',
+      desc: 'Show Pictures!',
+      number: 0,
+      images: [
+        'https://www.w3schools.com/w3css/img_lights.jpg',
+        'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80',
+        'https://images.pexels.com/photos/67636/rose-blue-flower-rose-blooms-67636.jpeg?auto=format%2Ccompress&cs=tinysrgb&dpr=1&w=500',
+        'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
+      ]
+    }
+  }
+  showPicture() {
+    if (this.state.number == this.state.images.length) {
+      this.setState({
+        number: 0,
+        desc: 'Show Image!',
+      })
+    } else {
+      this.setState({
+        number: this.state.number + 1,
+        desc: 'Next Image!',
+      })
+    }
+    this.setState({
+      image: this.state.images[this.state.number],
+
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={() => this.showPicture()}>{this.state.desc}</button>
+        <br></br>
+        <img src={this.state.image} alt='No Image =(' height="500" width="800" />
+        <h3>Picture number: {this.state.number}</h3>
+      </div>
+    )
+  }
+}
 function About() {
-  return <h2>About</h2>;
+
+  return (
+    <Picture />
+  );
 }
 
 function Topic({ match }) {
@@ -84,14 +145,14 @@ function Topic({ match }) {
 function Topics({ match }) {
   return (
     <div>
-      <h2>Topics</h2>
+      <h2>Testing </h2>
 
       <ul>
         <li>
-          <Link to={`${match.url}/components`}>Components</Link>
+          <Link to={`${match.url}/test1`}>Test1</Link>
         </li>
         <li>
-          <Link to={`${match.url}/props-v-state`}>Props v. State</Link>
+          <Link to={`${match.url}/test2`}>Test2</Link>
         </li>
       </ul>
 
@@ -105,25 +166,6 @@ function Topics({ match }) {
   );
 }
 
-function calculateWinner(squares) {
-  const lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  for (let i = 0; i < lines.length; i++) {
-    const [a, b, c] = lines[i];
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return squares[a];
-    }
-  }
-  return null;
-}
 
 
 function Header() {
@@ -133,7 +175,7 @@ function Header() {
         <Link to="/">Home</Link>
       </li>
       <li>
-        <Link to="/about">About</Link>
+        <Link to="/images">Images</Link>
       </li>
       <li>
         <Link to="/topics">Topics</Link>
